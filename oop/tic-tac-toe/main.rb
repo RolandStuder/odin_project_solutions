@@ -6,11 +6,13 @@ require './lib/ai_player.rb'
 class Main
   attr_accessor :players
 
-  def self.play
-    puts "Welcome to the TicTacToe"
-
+  def initialize
     @players = []
+  end
 
+
+  def play
+    puts "Welcome to the TicTacToe"
 
     puts "Play"
     puts "1) Human vs. Human"
@@ -49,17 +51,17 @@ class Main
   end
 
 
-  def self.human_player(number)
+  def human_player(number)
     puts "Name player #{number}: "
     name = gets.chomp
     @players << Player.new(name)
   end
 
-  def self.computer_player(number)
+  def computer_player(number)
     @players << AIPlayer.new("Computer #{number}")
   end
 end
 
-Main.play
-
+game = Main.new
+game.play
 
