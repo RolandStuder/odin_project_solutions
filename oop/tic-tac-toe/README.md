@@ -59,5 +59,5 @@ This features several play modes:
 ## Learnings
 
 * AI was easily includable by just going for a new class that inherits from exitsting player, that feld super nice...
-* A smart AI is not as easy to make as I thought. I underestimated the possible combinations
+* A smart AI is not as easy to make as I thought. I underestimated the possible combinations.
 * Lettings AI fight each other is fun :-)
