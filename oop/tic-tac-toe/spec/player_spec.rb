@@ -13,27 +13,19 @@ describe Player do
 
   describe :wins do
     it "increments win count by one" do
-      expect(player.wins).to eq 1
-      expect(player.wins).to eq 2
-      expect(player.win_count).to eq 2
+      player.wins(@moves)
+      player.wins(@moves)
+      expect(player.statistics[:wins]).to eq 2
     end
   end
 
   describe :looses do
     it "increments loss count by one" do
-      expect(player.loses).to eq 1
-      expect(player.loses).to eq 2
-      expect(player.loss_count).to eq 2
+      player.loses(@moves)
+      player.loses(@moves)
+      expect(player.statistics[:losses]).to eq 2
     end
   end
-
-  describe :statistics do
-    it "returns hash with wins losses and percentage" do
-      expect(player.statistics).to include(wins: 2)
-      expect(player.statistics).to include(losses: 2)
-      expect(player.statistics).to include(win_percentage: 0.5)
-    end
-  end 
 
   describe :prompt_for_action do
     pending

@@ -16,11 +16,7 @@ class AIPlayer < Player
     case @strategy
     when :both
       avoid_loosing || winning_strategy || random_available_move
-    when :winning
-      winning_strategy || random_available_move
-    when :avoid_loosing
-      avoid_loosing || random_available_move
-    when :recommendations
+    when :recommendation
       recommendation || random_available_move
     else
       random_available_move
