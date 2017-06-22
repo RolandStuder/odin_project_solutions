@@ -2,7 +2,7 @@ require './lib/board'
 require 'pry'
 
 class Game
-  attr_accessor :first_player, :second_player
+  attr_accessor :first_player, :second_player, :display
 
 
   def initialize(players)
@@ -17,11 +17,12 @@ class Game
     @current_player = @first_player
     @board = Board.new
     @moves = []
+    @display = true
   end
 
   def start
-    puts "#{@first_player.name} begins."
-    puts "Pick a number to put your tile:"
+    puts "#{@first_player.name} begins." if @display
+    puts "Pick a number to put your tile:" if @display
     loop do
       turn
       break if win?(@current_player.tile)
@@ -29,29 +30,28 @@ class Game
       next_player
     end
 
-    system 'clear'
-    @board.draw
+    system 'clear' if @display
+    @board.draw if @display
 
     if win?(@current_player.tile)  
-      puts "#{@current_player.name} WINS!!!!!!"
-      @current_player.wins
-      next_player.loses
+      puts "#{@current_player.name} WINS!!!!!!" if @display
+      @current_player.wins(@moves)
+      next_player.loses(@moves)
     else
-      puts "It's a draw :-)"
-      @current_player.draws
-      next_player.draws
-
+      puts "It's a tie :-)" if @display
+      @current_player.ties
+      next_player.ties
     end
   end 
 
   def turn
-    system 'clear'
-    @board.draw
-    puts "New turn for #{@current_player.name} (#{@board.send(@current_player.tile)})"
-    tile = @current_player.prompt_for_action
+    system 'clear' if @display
+    @board.draw if @display
+    puts "New turn for #{@current_player.name} (#{@board.send(@current_player.tile)})" if @display
+    tile = @current_player.prompt_for_action(@moves)
     x,y = number_to_x_y(tile)
     if @board.put(@current_player.tile,x,y)
-      @moves << tile
+      @moves << [tile,@current_player.tile]
     else
       turn
     end

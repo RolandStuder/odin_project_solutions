@@ -16,8 +16,10 @@ class Main
 
     puts "Play"
     puts "1) Human vs. Human"
-    puts "2) Human vs. Computer"
-    puts "3) Computer vs. Computer"
+    puts "2) Human vs. Computer (Learning)"
+    puts "3) Computer (Random) vs. Computer (Learning)"
+    puts "4) AI fast mode (Smart vs. Random)"
+    puts "5) AI fast mode (Smart vs. Smart)"
 
     game_mode = gets.chomp.to_i
 
@@ -27,17 +29,25 @@ class Main
       human_player("two")
     when 2
       human_player("one")
-      computer_player("two")
+      computer_player("two", :both)
     when 3
       computer_player("one")
-      computer_player("two")
+      computer_player("two", :both)
+    when 4
+      computer_player("Computer (Learning)", :both)
+      computer_player("Computer (Random)", :none)
+      fast_mode
+    when 5
+      computer_player("Computer (Learning)", :both)
+      computer_player("Computer (Learning)", :both)
+      fast_mode
     else
       exit
     end
 
     loop do
-      game = Game.new(@players)
-      game.start
+      round = Game.new(@players)
+      round.start
       puts
 
       @players.each do |player|
@@ -50,6 +60,38 @@ class Main
     end
   end
 
+  def fast_mode
+    counter = 0
+    time = Time.now
+    loop do
+      round = Game.new(@players)
+      round.display = false
+      round.start
+      counter += 1
+      if counter % 10 == 0
+        system 'clear'
+        puts "=========================="
+        puts "Statistics for #{@players[0].statistics[:games]} games"
+        puts "=========================="
+        statistics(@players[0])
+        statistics(@players[1])
+      end
+      if counter == 1000
+        puts "Time: #{Time.now - time}"
+        exit
+      end
+    end
+  end
+
+  def statistics(player)
+    puts "=========================="
+    puts "#{player.name.upcase}"
+    puts "Win percentage TOTAL:               #{player.statistics[:win_percentage]}"
+    puts "Win percentage for last 100 Games:  #{player.statistics(last: 100)[:win_percentage]}"
+    puts "Loss percentage for last 100 Games: #{player.statistics(last: 100)[:loss_percentage]}"
+    puts "Tie percentage for last 100 Games:  #{player.statistics(last: 100)[:tie_percentage]}"
+  end
+
 
   def human_player(number)
     puts "Name player #{number}: "
@@ -57,8 +99,8 @@ class Main
     @players << Player.new(name)
   end
 
-  def computer_player(number)
-    @players << AIPlayer.new("Computer #{number}")
+  def computer_player(name, strategy = "")
+    @players << AIPlayer.new(name, strategy)
   end
 end
 
