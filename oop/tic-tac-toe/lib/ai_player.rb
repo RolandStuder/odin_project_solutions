@@ -20,10 +20,29 @@ class AIPlayer < Player
       winning_strategy || random_available_move
     when :avoid_loosing
       avoid_loosing || random_available_move
+    when :recommendations
+      recommendation || random_available_move
     else
       random_available_move
     end
   end
+
+  def recommendation
+    recommendations = @winning_sequences.reduce(Hash.new(0)) do |rec, seq|
+      if next_move_available?(seq) && winning_for_me?(seq) && (@moves - seq).empty?
+        rec[seq[@moves.length]] += 1
+      elsif next_move_available?(seq) && winning_for_oppenent?(seq) && (@moves - seq).empty?
+        rec[seq[@moves.length]] -= 2
+      end
+      rec
+    end
+    unless recommendations.empty?
+      return recommendations.max_by{|k,v| v}[0][0]
+    else
+      return nil
+    end
+  end 
+
 
   def winning_strategy
     my_winning_sequences = @winning_sequences.select do |seq| 
@@ -53,7 +72,11 @@ class AIPlayer < Player
   end
 
   def next_move_available?(seq)
-    !@moves.include?(seq[@moves.length])
+    if seq.length <= @moves.length
+      return false
+    else
+      return !@moves.include?(seq[@moves.length])
+    end
   end
 
   def winning_for_me?(seq)

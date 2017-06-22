@@ -38,7 +38,7 @@ class Main
       computer_player("Computer (Random)", :none)
       fast_mode
     when 5
-      computer_player("Computer (Learning)", :both)
+      computer_player("Computer (Learning)", :recommendation)
       computer_player("Computer (Learning)", :both)
       fast_mode
     else
