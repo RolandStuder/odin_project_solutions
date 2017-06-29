@@ -25,53 +25,53 @@ describe 'Board' do
     end
 
     it 'returns no matches if there are no matches  ' do
-      expect(board.break_attempt([5,5,5,5])).to include ({correct_positions: 0, correct_colors: 0})
-      expect(board.break_attempt([6,6,6,6])).to include ({correct_positions: 0, correct_colors: 0})
+      expect(board.break_attempt([5,5,5,5])).to include ({positions: 0, colors: 0})
+      expect(board.break_attempt([6,6,6,6])).to include ({positions: 0, colors: 0})
     end
 
     it 'matches positions' do
-      expect(board.break_attempt([1,5,5,5])).to include ({correct_positions: 1})
-      expect(board.break_attempt([1,2,5,5])).to include ({correct_positions: 2})
-      expect(board.break_attempt([1,2,5,4])).to include ({correct_positions: 3})
-      expect(board.break_attempt([1,2,3,4])).to include ({correct_positions: 4})
+      expect(board.break_attempt([1,5,5,5])).to include ({positions: 1})
+      expect(board.break_attempt([1,2,5,5])).to include ({positions: 2})
+      expect(board.break_attempt([1,2,5,4])).to include ({positions: 3})
+      expect(board.break_attempt([1,2,3,4])).to include ({positions: 4})
     end
 
     it 'matches colors' do
-      expect(board.break_attempt([5,5,5,1])).to include ({correct_colors: 1, correct_positions: 0})
-      expect(board.break_attempt([5,1,2,5])).to include ({correct_colors: 2, correct_positions: 0})
-      expect(board.break_attempt([4,1,2,3])).to include ({correct_colors: 4, correct_positions: 0})
+      expect(board.break_attempt([5,5,5,1])).to include ({colors: 1, positions: 0})
+      expect(board.break_attempt([5,1,2,5])).to include ({colors: 2, positions: 0})
+      expect(board.break_attempt([4,1,2,3])).to include ({colors: 4, positions: 0})
     end
 
 
     it 'matches colors and positions' do
-      expect(board.break_attempt([1,4,3,2])).to include ({correct_colors: 2, correct_positions: 2})
-      expect(board.break_attempt([1,3,4,2])).to include ({correct_colors: 3, correct_positions: 1})
+      expect(board.break_attempt([1,4,3,2])).to include ({colors: 2, positions: 2})
+      expect(board.break_attempt([1,3,4,2])).to include ({colors: 3, positions: 1})
     end
 
     it 'does not return more hints, than matched pegs' do 
-      expect(board.break_attempt([1,1,1,1])).to include ({correct_colors: 0, correct_positions: 1})
-      expect(board.break_attempt([5,1,1,1])).to include ({correct_colors: 1, correct_positions: 0})
-      expect(board.break_attempt([1,1,2,2])).to include ({correct_colors: 1, correct_positions: 1})
+      expect(board.break_attempt([1,1,1,1])).to include ({colors: 0, positions: 1})
+      expect(board.break_attempt([5,1,1,1])).to include ({colors: 1, positions: 0})
+      expect(board.break_attempt([1,1,2,2])).to include ({colors: 1, positions: 1})
     end
 
     it 'doesn t overmatch pegs' do
       board2 = Board.new
       board2.set_code([1,1,1,2])
 
-      expect(board2.break_attempt([1,1,1,1])).to include ({correct_colors: 0, correct_positions: 3})
-      expect(board2.break_attempt([5,1,1,1])).to include ({correct_colors: 1, correct_positions: 2})
-      expect(board2.break_attempt([1,1,2,2])).to include ({correct_colors: 0, correct_positions: 3})
-      expect(board2.break_attempt([2,2,2,5])).to include ({correct_colors: 1, correct_positions: 0})
+      expect(board2.break_attempt([1,1,1,1])).to include ({colors: 0, positions: 3})
+      expect(board2.break_attempt([5,1,1,1])).to include ({colors: 1, positions: 2})
+      expect(board2.break_attempt([1,1,2,2])).to include ({colors: 0, positions: 3})
+      expect(board2.break_attempt([2,2,2,5])).to include ({colors: 1, positions: 0})
 
       board3 = Board.new
       board3.set_code([3,4,5,4])
 
-      expect(board3.break_attempt([3,5,4,5])).to include ({correct_colors: 2, correct_positions: 1})
+      expect(board3.break_attempt([3,5,4,5])).to include ({colors: 2, positions: 1})
 
       board4 = Board.new
       board4.set_code([2,1,2,4])
 
-      expect(board4.break_attempt([1,2,3,4])).to include ({correct_colors: 2, correct_positions: 1})
+      expect(board4.break_attempt([1,2,3,4])).to include ({colors: 2, positions: 1})
     end
   end
 

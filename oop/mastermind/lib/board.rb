@@ -1,5 +1,9 @@
+require './lib/matcher.rb'
+
 class Board
-  attr_reader :code
+  include Matcher
+
+  attr_reader :code, :attempts
 
   def initialize
     @code = [rand(1..6),rand(1..6),rand(1..6),rand(1..6)]
@@ -14,35 +18,14 @@ class Board
   def break_attempt (attempt)
     return false unless valid_code?(attempt)
     
-    result = { correct_positions: 0, correct_colors: 0}
+    matching = peg_match(@code, attempt)
 
-    matched_code = @code.dup
-    attempt_original = attempt.dup
-
-    binding.pry if @code == [3,4,5,4]
-
-    
-    matched_code.each_with_index do |peg, i|
-      if peg == attempt[i]
-        result[:correct_positions] += 1
-        matched_code[i] = nil # So it will be no longer used
-        attempt[i] = nil # So it will be no longer used
-      end
-    end
-
-    matched_code.each_with_index do |peg, i|
-      if !peg.nil? && attempt.include?(peg)
-        result[:correct_colors] += 1
-        attempt.delete_at(attempt.index(peg))
-      end
-    end
-
-    if result[:correct_positions] == 4
+    if matching[:positions] == 4
       @broken = true
     end
 
-    @attempts << {code: attempt_original, result: result}
-    result
+    @attempts << {code: attempt, result: matching}
+    matching
   end
 
   def code_broken?
@@ -94,8 +77,8 @@ class Board
     end
     print "|  "
     unless hints.empty?
-      print "Correct position: #{hints[:correct_positions]} ".colorize(45)
-      print "Correct colors: #{hints[:correct_colors]} ".colorize(36)
+      print "Correct position: #{hints[:positions]} ".colorize(45)
+      print "Correct colors: #{hints[:colors]} ".colorize(36)
     end
     print "\n"
     draw_separator
