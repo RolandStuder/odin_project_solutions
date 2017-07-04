@@ -1,0 +1,31 @@
+--- !ruby/object:Game
+word: recidivous
+remaining_letters:
+- d
+- f
+- g
+- h
+- i
+- j
+- k
+- l
+- m
+- n
+- o
+- p
+- q
+- r
+- t
+- u
+- v
+- w
+- x
+- y
+- z
+guesses:
+- c
+- a
+- e
+- s
+- b
+guesses_left: 3
